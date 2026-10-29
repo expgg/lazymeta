@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build Changelog Entry
+        id: changelog
+        run: |
+          echo "Release tag: ${{ github.ref_name }}"
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "LazyMeta ${{ github.ref_name }}"
+          body: |
+            ### ⚡ LazyMeta ${{ github.ref_name }}
+            
+            High-throughput 30-day automated bulk scheduler for Meta Graph API.
+            
+            #### Highlights:
+            - **Eliminates Manual Scheduling:** Queues 90 images across 30 days in ~3 minutes.
+            - **Strict 10m - 30d Window Guardrails:** Client-side safety buffer and auto-slot rollover.
+            - **Anti-Spam Rate Limits:** 2.5s jittered delays with exponential backoff.
+            - **Single & Multi-Image Support:** Direct photo scheduling and multi-photo carousel container flow.
+            - **Atomic Resume Support:** Interrupted queues resume cleanly via local state journaling.
+            
+            See [CHANGELOG.md](https://github.com/expgg/lazymeta/blob/main/CHANGELOG.md) for detailed notes.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
