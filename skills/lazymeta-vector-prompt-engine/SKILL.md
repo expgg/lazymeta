@@ -1,11 +1,11 @@
 ---
 name: lazymeta-vector-prompt-engine
-description: Generate ultra-precise, silkscreen trace-optimized image prompts for Google AI Flow, Imagen 3, or ImageFX, mapped directly to LazyMeta 30-day queues (01.jpg - 90.jpg).
+description: Generate ultra-precise, high-hook editorial 2.5D vector image prompts for Google AI Flow, Imagen 3, Midjourney, or Flux, mapped directly to LazyMeta 30-day queues (01.jpg - 90.jpg) with zero Illustrator trace overhead.
 ---
 
-# LazyMeta Vector Art & Trace-Optimized Prompt Engine
+# LazyMeta High-Hook Visual Prompt Engine (v3.0)
 
-Use this skill when you need to generate high-contrast, flat silkscreen vector illustrations for social media posts that can be **cleanly traced into `.ai` vector paths via Adobe Illustrator** and scheduled seamlessly with **LazyMeta**.
+Use this skill to generate **thumb-stopping, high-retention 2.5D editorial vector prompts** that publish directly to Meta feeds without any Adobe Illustrator image-trace bottleneck.
 
 ---
 
@@ -15,58 +15,73 @@ Use this skill when you need to generate high-contrast, flat silkscreen vector i
 Post Topic / captions.txt
         │
         ▼
-[This Prompt Engine]
+[This High-Hook Prompt Engine]
         │
         ▼
-Google AI Flow / Imagen 3 / ImageFX (Pure White Background, Flat Colors)
+Google AI Flow / Imagen 3 / Midjourney / Flux
+(Edgy 2.5D Vector, Obsidian Backdrop, Dual-Tone Rim Light)
         │
         ▼
-Adobe Illustrator Auto-Trace (scripts/Auto_Image_Trace_Expand.jsx -> Ignore White)
-        │
-        ▼
-images/01.jpg ... 90.jpg
+images/01.jpg ... images/90.jpg  (Direct Save)
         │
         ▼
 LazyMeta Bulk Scheduler (python run.py schedule)
 ```
 
+* **No Adobe Illustrator Trace:** Images drop straight from the AI generator into `images/` without manual tracing or path expansion.
+* **No Pure White Cutouts:** Flat `#ffffff` backgrounds look like generic clipart. We use deep obsidian `#0B0F17` atmospheric backdrops that make visuals violently pop in mobile dark and light feeds.
+
 ---
 
-## 2. Technical Art Constraints (Vector Optimization)
+## 2. The 0.3-Second Scroll-Stop Architecture
 
-Every prompt MUST enforce:
-* **Art Style:** Silkscreen print aesthetic, flat vinyl sticker look, clean corporate 2D tech editorial flat vector art (Linear / Notion / Stripe illustration aesthetic).
-* **Composition:** Maximum 1 or 2 focal elements (faceless human interacting with one oversized metaphorical prop).
-* **Faceless Characters:** Clean silhouettes, warm peach or golden skin tone, thick limbs, zero facial features, clearly segmented clothing colors.
-* **Background:** 100% pure flat white (`#ffffff`) with generous negative space.
-* **Color Palette:** Exactly 4 to 5 flat solid colors (Zero gradients, zero shadows, zero reflections).
-* **Aspect Ratios:** `1:1` (Square 1080x1080) for feed, or `4:5` (Portrait 1080x1350) for maximum mobile feed space.
-* **Minimal Tech Typography & Badges (Encouraged):** Clean geometric badges, code tags, or status pills (e.g. `API`, `v2.0`, `SQL`, `404`) that add high-end editorial tech credibility.
-* **Banned:** No paragraph text, no AI gibberish text, no plastic sluggish AI blurs, no gradient transitions, no floating confetti, no drop shadows.
+Mobile feed users judge the image before reading any text. To halt the scroll:
+
+1. **Visual Irony / Metaphorical Tension:** Don't depict someone passively typing at a desk. Depict tension: a tiny developer debugging a colossal monolith; a scale where 1 clean line of code outweighs 10,000 messy lines; a lone consultant flipping a single lever that powers an entire factory.
+2. **Focal Simplicity (Low Cognitive Load):** Exactly **1 or 2 dominant focal elements**. The visual punchline must be grasped in under 200 milliseconds.
+3. **Dual-Tone Volumetric Rim Lighting:** Neon electric cyan + hot orange, or emerald green + violet, carving out razor-sharp edges against dark slate.
+4. **Anti-AI Craftsmanship:** Enforce vector contours, stylized faceless silhouettes, and geometric 2.5D glassmorphism. Suppress waxy plastic skin, uncanny valley faces, and distorted hands.
+5. **Micro Tech Badges:** Include a single sharp UI pill tag (e.g. `STATUS: 200`, `v2.4`, `API DEPLOYED`, `LEVERAGE: 10X`) to anchor credibility.
 
 ---
 
 ## 3. Communication Protocol
-* Explain the visual concept and Illustrator advice in **Bengali (বাংলা)**.
-* Write the actual **Main Prompt** and **Negative Prompt** in **English** for maximum Imagen accuracy.
-* Include the mapping file name (e.g. `01.jpg`, `02.jpg`, etc.) so it matches LazyMeta's queue.
+
+* **Operator Interaction:** Communicate with the user strictly in **English**.
+* **Post Captions (If Farming Bengali Audience):** Provide Bengali post text if requested, but all **Main Prompts** and **Negative Prompts** MUST be written in **English** for maximum AI image fidelity.
+* **Queue Tagging:** Always tag the exact file mapping (`images: 01.jpg`, `images: 02.jpg`, etc.).
 
 ---
 
 ## 4. Prompt Template
 
 ```markdown
-### 🖼️ Post [XX] -> `[XX].jpg`
+### 🖼️ Post [XX] -> `images: [XX].jpg`
 
-**১. সংক্ষিপ্ত কনসেপ্ট (Bengali):**
-[১-২ লাইনের ব্যাখ্যা]
+**Visual Hook Concept:**
+[2-line explanation of the visual metaphor, conflict, and scroll-stopping reason]
 
-**২. Main Image Prompt (English):**
-> Silkscreen print aesthetic, ultra-clean minimal 2D vector graphic of [SUBJECT & ACTION], 1:1 square aspect ratio composition. Central composition features a single stylized faceless person shown in side profile with smooth warm peach skin tone, wearing a solid light white crewneck t-shirt, dark navy blue trousers, and minimal dark shoes. The person is purposefully interacting with [OVERSIZED PROP], composed of [PRECISE 2-3 FLAT COLOR BLOCKS]. Pure 2D flat silhouette shapes, thick purposeful contours, strictly uniform flat color fills with zero internal gradation. Surrounded by generous empty negative space. Isolated on an immaculate, solid pure white background (#ffffff). High edge contrast, knife-sharp vector boundaries with 100% opacity, optimized for Adobe Illustrator Image Trace and SVG vector path expansion. No floating icons, no text, no code snippets, no letters, no typography, aspect ratio 1:1.
+**Main Image Prompt (English):**
+> High-end editorial vector illustration, modern 2.5D tech graphic with dramatic cinematic lighting, [1:1 square / 4:5 portrait] aspect ratio. [CENTRAL METAPHOR & TENSION: e.g. A stylized silhouette developer standing at the edge of an immense floating dark-slate server monolith, reaching toward a single glowing neon-emerald circuit switch]. Clean geometric silhouettes, rich color depth, sharp vector boundaries with translucent frosted-glass floating UI elements. Minimal sharp UI badge in top corner reading '[MINIMAL BADGE: e.g. STATUS: 200]'. Atmospheric deep obsidian navy background (#0B0F17) with faint subtle blueprint grid lines and glowing vector particles. High-contrast dual-tone volumetric rim lighting in electric cyan and warm amber accentuating the subject contours. Masterpiece digital art, sleek Linear and Stripe editorial tech design aesthetic, hyper-clean vector shapes, zero noise, high visual hook retention, aspect ratio [1:1 / 4:5].
 
-**৩. Negative Prompt (English):**
-> gradients, soft shading, color transitions, lighting, ambient occlusion, drop shadows, cast shadows, ground shadow, blur, 3d render, bevel, highlights, particles, action lines, burst lines, floating icons, text, typography, letters, numbers, realistic details, sketch lines, watercolor, noise, grain, textures, dithering, busy background, complex patterns
-
-**৪. Adobe Illustrator Trace Settings (Bengali):**
-- Preset: Color (5 Colors), Noise: 15px, Paths: 80%, Ignore White: Checked.
+**Negative Prompt (English):**
+> photorealistic human face, realistic skin texture, ugly plastic AI look, distorted hands, blurry lines, low quality, chaotic cluttered background, unreadable messy gibberish text walls, 3d clay render, cheesy cartoon, stock photo, watermark, washed out colors, flat boring white background
 ```
+
+---
+
+## 5. Few-Shot High-Hook Examples
+
+### Example 1: High-Stakes Code Architecture
+* **Visual Hook:** A lone developer in dark technical streetwear holding a single warm-amber glowing key before a giant translucent glass monolith filled with glowing circuit nodes.
+* **Main Prompt:**
+  > High-end editorial vector illustration, modern 2.5D tech graphic of code architecture, 1:1 square aspect ratio. A sleek stylized silhouette developer standing on a clean floating dark-graphite platform, holding a glowing warm-amber key toward an immense translucent glass cube containing glowing circuit nodes and wireframe geometry. A sharp frosted glass badge floats beside it reading 'CORE LOGIC'. Atmospheric deep obsidian background (#0A0E17) with faint geometric coordinate lines. Dramatic cinematic dual-tone rim lighting in electric cobalt blue and vibrant gold outlining the character and glass edges. Clean vector contours, Stripe Press and Linear design aesthetic, visually striking thumb-stopper composition, aspect ratio 1:1.
+* **Negative Prompt:**
+  > realistic face, plastic 3d render, blurry, generic stock photo, messy text walls, ugly hands, chaotic composition, washed out lighting, flat plain white background
+
+### Example 2: The Leverage Principle (Business / Consulting)
+* **Visual Hook:** A consultant calmly pressing a single cyan button that engages massive dark-slate precision gears, representing output leverage.
+* **Main Prompt:**
+  > High-end editorial vector tech illustration depicting leverage versus brute force, 1:1 aspect ratio. Central composition features a stylized faceless professional in side profile wearing a sharp dark blazer, calmly pressing a single glowing neon-cyan power switch on an elegant floating console. In the background, massive interconnected dark-slate mechanical gears and glowing translucent data pipes power up in synchrony. A crisp, sharp status badge reads 'LEVERAGE: 10X'. Deep midnight navy backdrop with subtle ambient light leaks and fine vector measurement lines. Electric cyan and vibrant coral volumetric rim lighting creating extreme edge contrast. Masterpiece vector art, modern tech editorial style, ultra-high engagement visual hook, aspect ratio 1:1.
+* **Negative Prompt:**
+  > photorealism, blurry, cheesy 3D, noise, low resolution, crowded unreadable text, dull flat colors, stock photo, plain white background

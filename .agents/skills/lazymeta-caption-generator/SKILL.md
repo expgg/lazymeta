@@ -181,17 +181,20 @@ To prevent AI token fatigue and ensure **Post #90 is just as brilliant as Post #
 
 ---
 
-## 🎨 Phase 4: Integrated Vector Prompt & Minimal Typography Engine
+## 🎨 Phase 4: High-Hook Visual Engine (Direct Feed Publishing)
 
-Alongside every caption block, output the matching trace-ready image prompt for Google AI Flow, Imagen 3, or ImageFX, numbered to match the queue (`01.jpg` to `90.jpg`).
+No manual Adobe Illustrator trace bottleneck. All generated AI images are saved directly to `images/01.jpg` through `images/90.jpg` for automatic scheduling.
 
-### The Vector Quality Standard:
-* **The Background:** Pure, flat, unblemished white `#ffffff` with wide negative space (enables instant vectorization via [`Auto_Image_Trace_Expand.jsx`](file:///c:/Users/exploriot/Desktop/lazymeta/scripts/Auto_Image_Trace_Expand.jsx)).
-* **Subjects:** Maximum 1–2 focal elements. Stylized faceless character in clean silhouette interacting with an oversized metaphorical UI prop (wireframe window, terminal screen, giant smartphone, isometric blocks).
-* **Minimalist Typography Badges (Encouraged):** Crisp, geometric tech badges, code tags, or status pills (e.g. `API`, `v2.0`, `SQL`, `STATUS: OK`, `404`) that give the artwork high-end editorial credibility and eliminate sluggish AI plastic looks.
-* **Palette:** Exactly 4 to 5 solid flat colors. Strictly 100% flat fills.
-* **Banned:** No gradients, no drop shadows, no ambient occlusion, no chaotic unreadable text walls, no plastic blur artifacts.
-* **Aspect Ratio:** `1:1` (Square 1080x1080) or `4:5` (Portrait 1080x1350) for maximum mobile feed space.
+### The 0.3-Second Visual Scroll-Stopper Standard:
+On mobile feeds, users judge the image before reading a single line. The visual must look like a **$50,000 custom editorial tech graphic commissioned by Stripe, Linear, or Apple**:
+
+* **Style & Aesthetic:** High-end 2D/2.5D modern editorial tech vector art. Sleek isometric framing, clean geometric silhouettes, and dark-mode glassmorphic digital art.
+* **Atmospheric Backgrounds (No Plain White):** Deep, premium dark-mode backgrounds (#0B0F17 obsidian slate, midnight navy, or dark charcoal graphite) with subtle ambient grid lines or faint glow.
+* **Cinematic Dual-Tone Rim Lighting:** Electric cyan, vibrant amber, or emerald green volumetric rim glow outlining subject silhouettes to make them violently pop out of a Facebook mobile feed.
+* **Conceptual Tension:** A clear visual metaphor (e.g. A tiny developer calmly debugging an colossal glowing monolith; or a wireframe bridge holding a massive glowing database).
+* **Minimalist Tech Typography:** Crisp vector UI badges, code tags, or status pills (e.g. `STATUS: 200 OK`, `API v2.0`, `0.04ms`) that give the artwork high-end editorial credibility and eliminate the generic sluggish AI look.
+* **Banned:** No waxy plastic AI skin, no distorted hands, no generic cartoon blobs, no washed out flat white backgrounds, no unreadable messy AI text walls.
+* **Aspect Ratio:** `1:1` (Square 1080x1080) or `4:5` (Portrait 1080x1350) for maximum screen real-estate.
 
 ---
 
@@ -216,10 +219,9 @@ images: 01.jpg
 #FreelanceStrategy #ClientAcquisition #BusinessMindset #AgencyGrowth
 ---
 
-### 🖼️ Paired Vector Image Prompt -> `01.jpg`
-> **Prompt (English):** Silkscreen print aesthetic, ultra-clean minimal 2D vector graphic of a developer presenting a high-conversion landing page metric, 1:1 square aspect ratio composition. Central composition features a single stylized faceless person shown in side profile with smooth warm peach skin tone, wearing a crisp white crewneck t-shirt and dark slate trousers. The person is confidently pointing toward an oversized, sharp dark-navy floating browser wireframe displaying a minimal bright emerald-green upward growth chart bar and a crisp minimal tag reading 'CONVERSION +50%'. Pure 2D flat silhouette shapes, thick purposeful contours, strictly uniform flat color fills with zero internal gradation. Isolated on an immaculate, solid flat pure white background (#ffffff). Sharp knife-edge vector boundaries with 100% opacity, optimized for Adobe Illustrator Image Trace and SVG path expansion. No background noise, no floating confetti, no gradients, no shadows, aspect ratio 1:1.
-> **Negative Prompt:** gradients, shadows, soft shading, 3d render, photorealism, blurry, sketch lines, noisy background, ambient occlusion, complex patterns, illegible text
-> **Illustrator Trace:** Run `scripts/Auto_Image_Trace_Expand.jsx` with 'Ignore White' checked.
+### 🖼️ Paired High-Hook Image Prompt -> `images: 01.jpg`
+> **Main Prompt (English):** High-end editorial vector illustration, modern 2.5D tech graphic of business leverage and conversion value, 1:1 square aspect ratio. Central composition features a sleek stylized silhouette professional in side profile wearing minimalist dark streetwear, holding a glowing neon-emerald key toward an oversized floating dark-navy browser wireframe showing a massive upward green conversion chart. A crisp, sharp frosted glass badge in the corner reads 'CONVERSION: +50%'. Deep obsidian slate background (#0B0F17) with faint architectural grid lines and glowing particle embers. Dramatic dual-tone volumetric rim lighting in electric emerald and warm amber creating extreme edge contrast. Masterpiece vector art, modern Stripe Press and Linear design aesthetic, hyper-clean silhouettes, ultra-high engagement visual hook, aspect ratio 1:1.
+> **Negative Prompt:** photorealistic face, realistic skin texture, ugly plastic AI render, blurry lines, messy unreadable text walls, 3d clay, cheesy cartoon, washed out lighting, flat plain white background
 ```
 
 ---
