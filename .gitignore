@@ -53,4 +53,7 @@ htmlcov/
 images/
 test_images/
 campaigns/**/images/
+tests/**/images/
+tests/digital_marketing/
+
 
