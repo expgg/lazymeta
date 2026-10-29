@@ -1,48 +1,67 @@
 # LAZYMETA PIPELINE & SYSTEM RULES (v3.0)
-## Folder Structure, File Conventions & Automated Scheduling Rules
+## Campaign Folders, JSON/TXT Captions & Automated Scheduling Rules
 
 ---
 
-## 1. FILE & DIRECTORY STRUCTURE
+## 1. CAMPAIGN FOLDER STRUCTURE (RECOMMENDED)
 
-To run a 30-day automated queue without errors, set up your project directory like this:
+Organizing by campaign folder keeps each niche cleanly isolated and portable:
 
 ```text
 lazymeta/
-├── content_engine/
-│   ├── 01_text_engine.md        # Copywriting, pre-fold hooks & 5 viral buckets
-│   ├── 02_image_engine.md       # High-hook 2.5D editorial vector prompt engine
-│   └── 03_pipeline_and_rules.md # This pipeline, folder structure & CLI guide
-├── images/                      # Generated visual assets
-│   ├── 01.jpg
-│   ├── 02.jpg
-│   ├── ...
-│   └── 90.jpg
-├── captions.txt                 # All 90 posts separated by '---'
+├── campaigns/                   # Store all your 30-day niche campaigns here
+│   ├── webdev_mastery/          # Niche A
+│   │   ├── captions.json        # Structured post data & photo mappings
+│   │   └── images/              # 01.jpg, 02.jpg ... 90.jpg
+│   └── ecommerce_growth/        # Niche B
+│       ├── captions.json
+│       └── images/
+├── content_engine/              # Content generation prompts & guides
 ├── .env                         # Meta API credentials (strictly gitignored)
-├── run.py                       # CLI entry point
-└── .lazymeta_state.json         # Auto-generated sync state
+└── run.py                       # CLI entry point
 ```
 
----
+To schedule or preview a campaign, simply run:
+```bash
+python run.py preview --campaign campaigns/webdev_mastery
+python run.py schedule --campaign campaigns/webdev_mastery
+```
 
-## 2. IMAGE CONVENTIONS & MAPPING
-
-* **Naming Format:** Save images sequentially as `01.jpg`, `02.jpg`, ..., `90.jpg` (supported extensions: `.jpg`, `.jpeg`, `.png`, `.webp`).
-* **Direct Feed Publishing:** Drop images straight from your AI image generator into `images/`. No Adobe Illustrator conversion needed.
-* **Aspect Ratio:** `1:1` (1080x1080) or `4:5` (1080x1350) for maximum mobile feed real estate.
-* **Single Photo Post:** Implicit matching (Post 1 gets `images/01.jpg`, Post 2 gets `images/02.jpg`) OR explicit header: `images: 01.jpg`.
-* **Multi-Photo Carousel:** Comma-separated list in the post header:
-  ```text
-  ---
-  images: 05a.jpg, 05b.jpg, 05c.jpg
-  Post text here...
-  ---
-  ```
+*(Note: Traditional root `captions.txt` / `captions.json` and `images/` folder also remain 100% supported if you prefer root execution.)*
 
 ---
 
-## 3. `captions.txt` SYNTAX & FORMATTING RULES
+## 2. `captions.json` FORMAT (CLEANEST & MACHINE-READABLE)
+
+Using `captions.json` eliminates delimiter errors, allows multi-photo carousels, and lets you store prompt metadata right alongside each post:
+
+```json
+[
+  {
+    "id": 1,
+    "day": 1,
+    "slot": "morning",
+    "images": ["01.jpg"],
+    "caption": "অধিকাংশ ফ্রিল্যান্সার ভাবে তাদের কাজ না পাওয়ার কারণ 'কমিউনিকেশন স্কিল'। ⚡\nকিন্তু বাস্তব সত্যিটা শুনলে আপনার চোখ কপালে উঠবে...\n\n#FreelanceStrategy #ClientAcquisition"
+  },
+  {
+    "id": 2,
+    "day": 1,
+    "slot": "afternoon",
+    "images": ["02a.jpg", "02b.jpg"],
+    "caption": "This 2-slide carousel breaks down leverage vs brute force! 🚀\n\nSwipe to inspect the architecture."
+  }
+]
+```
+
+* **Single Photo Post:** `"images": ["01.jpg"]` or `"images": "01.jpg"`.
+* **Multi-Photo Carousel:** `"images": ["02a.jpg", "02b.jpg"]`.
+* **Implicit Pairing:** If you leave `"images"` empty or omit it, LazyMeta automatically pairs posts with available files in `images/` sequentially!
+
+---
+
+## 3. `captions.txt` SYNTAX & FORMATTING RULES (ALTERNATIVE)
+
 
 1. **The Post Delimiter (`---`):**
    * Every single post MUST start and end with `---` on its own line.

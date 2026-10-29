@@ -87,18 +87,54 @@ def doctor(env_file: Path | None) -> None:
     console.print("\n[bold green]All systems operational! LazyMeta is ready to schedule.[/bold green]")
 
 
+def resolve_campaign_input(
+    campaign: Path | None,
+    captions: Path,
+    images: Path,
+) -> tuple[Path, Path]:
+    """Resolves captions and images paths if a --campaign folder is provided."""
+    if campaign:
+        if not campaign.exists() or not campaign.is_dir():
+            console.print(f"[bold red]Error:[/bold red] Campaign directory not found: {campaign}")
+            sys.exit(1)
+
+        json_file = campaign / "captions.json"
+        txt_file = campaign / "captions.txt"
+        if json_file.exists():
+            captions = json_file
+        elif txt_file.exists():
+            captions = txt_file
+        else:
+            console.print(
+                f"[bold red]Error:[/bold red] Neither 'captions.json' nor 'captions.txt' found inside campaign folder: {campaign}"
+            )
+            sys.exit(1)
+
+        campaign_images = campaign / "images"
+        if campaign_images.exists() and campaign_images.is_dir():
+            images = campaign_images
+        else:
+            images = campaign
+
+    return captions, images
+
+
 @main.command()
+@click.option("--campaign", "-C", type=click.Path(path_type=Path), default=None, help="Campaign directory containing captions.json (or captions.txt) and images/")
 @click.option("--images", "-i", type=click.Path(path_type=Path), default=Path("images"), help="Directory containing post images")
-@click.option("--captions", "-c", type=click.Path(path_type=Path), default=Path("captions.txt"), help="Captions text file with '---' dividers")
+@click.option("--captions", "-c", type=click.Path(path_type=Path), default=Path("captions.txt"), help="Captions file (captions.json or captions.txt)")
 @click.option("--slots", "-s", type=str, default=",".join(DEFAULT_SLOTS), help="Comma-separated daily time slots (e.g. 09:00,14:00,20:00)")
 @click.option("--start-date", "-d", type=str, default=None, help="Start date in YYYY-MM-DD format (default: today)")
-def preview(images: Path, captions: Path, slots: str, start_date: str | None) -> None:
+def preview(campaign: Path | None, images: Path, captions: Path, slots: str, start_date: str | None) -> None:
     """Dry-run simulation of the 30-day posting queue without sending API requests."""
     print_banner()
+
+    captions, images = resolve_campaign_input(campaign, captions, images)
 
     if not captions.exists():
         console.print(f"[bold red]Error:[/bold red] Captions file not found: {captions}")
         sys.exit(1)
+
 
     slot_list = [s.strip() for s in slots.split(",") if s.strip()]
     parsed_start_date = None
@@ -172,14 +208,16 @@ def preview(images: Path, captions: Path, slots: str, start_date: str | None) ->
 
 
 @main.command()
+@click.option("--campaign", "-C", type=click.Path(path_type=Path), default=None, help="Campaign directory containing captions.json (or captions.txt) and images/")
 @click.option("--images", "-i", type=click.Path(path_type=Path), default=Path("images"), help="Directory containing post images")
-@click.option("--captions", "-c", type=click.Path(path_type=Path), default=Path("captions.txt"), help="Captions text file with '---' dividers")
+@click.option("--captions", "-c", type=click.Path(path_type=Path), default=Path("captions.txt"), help="Captions file (captions.json or captions.txt)")
 @click.option("--slots", "-s", type=str, default=",".join(DEFAULT_SLOTS), help="Comma-separated daily time slots")
 @click.option("--start-date", "-d", type=str, default=None, help="Start date in YYYY-MM-DD format")
 @click.option("--yes", "-y", is_flag=True, help="Skip confirmation prompt")
 @click.option("--dry-run", is_flag=True, help="Simulate without making actual API calls")
 @click.option("--reset-state", is_flag=True, help="Clear existing resume journal before scheduling")
 def schedule(
+    campaign: Path | None,
     images: Path,
     captions: Path,
     slots: str,
@@ -191,8 +229,11 @@ def schedule(
     """Execute the bulk scheduling queue to Meta's servers."""
     print_banner()
 
+    captions, images = resolve_campaign_input(campaign, captions, images)
+
     # Pre-flight security check
     git_warnings = check_git_security()
+
     if git_warnings:
         for w in git_warnings:
             console.print(f"[bold red]✗ SECURITY ALERT:[/bold red] {w}")

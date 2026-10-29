@@ -72,3 +72,59 @@ def test_validate_posts_missing_image(tmp_path: Path):
     val = validate_posts(posts, images_dir=tmp_path)
     assert not val.is_valid
     assert any("does not exist" in e for e in val.errors)
+
+
+def test_parse_captions_json_array(tmp_path: Path):
+    (tmp_path / "img_01.jpg").write_bytes(b"image 1")
+    (tmp_path / "img_02a.jpg").write_bytes(b"image 2a")
+    (tmp_path / "img_02b.jpg").write_bytes(b"image 2b")
+
+    json_content = """[
+        {
+            "id": 1,
+            "images": ["img_01.jpg"],
+            "caption": "Hello from JSON post 1!"
+        },
+        {
+            "id": 2,
+            "images": ["img_02a.jpg", "img_02b.jpg"],
+            "caption": "Carousel post from JSON 2!"
+        }
+    ]"""
+    json_file = tmp_path / "captions.json"
+    json_file.write_text(json_content, encoding="utf-8")
+
+    posts = parse_captions_file(json_file, images_dir=tmp_path)
+    assert len(posts) == 2
+    assert posts[0].index == 1
+    assert len(posts[0].images) == 1
+    assert posts[0].images[0].name == "img_01.jpg"
+    assert "Hello from JSON post 1!" in posts[0].caption
+
+    assert posts[1].index == 2
+    assert posts[1].is_multi_image
+    assert len(posts[1].images) == 2
+    assert posts[1].images[0].name == "img_02a.jpg"
+    assert posts[1].images[1].name == "img_02b.jpg"
+
+
+def test_parse_captions_json_dict_wrapper(tmp_path: Path):
+    (tmp_path / "pic1.png").write_bytes(b"pic1")
+    json_content = """{
+        "niche": "freelancing",
+        "posts": [
+            {
+                "id": 1,
+                "images": "pic1.png",
+                "caption": "Niche wrapped caption."
+            }
+        ]
+    }"""
+    json_file = tmp_path / "captions.json"
+    json_file.write_text(json_content, encoding="utf-8")
+
+    posts = parse_captions_file(json_file, images_dir=tmp_path)
+    assert len(posts) == 1
+    assert posts[0].images[0].name == "pic1.png"
+    assert posts[0].caption == "Niche wrapped caption."
+

@@ -1,3 +1,4 @@
+import json
 import re
 from pathlib import Path
 from .models import PostItem, ValidationResult
@@ -26,28 +27,92 @@ def find_images_in_dir(images_dir: Path) -> list[Path]:
     return images
 
 
-def parse_captions_file(captions_path: Path, images_dir: Path | None = None) -> list[PostItem]:
+def parse_captions_json(captions_path: Path, images_dir: Path | None = None) -> list[PostItem]:
     """
-    Parses a captions file formatted with markdown '---' dividers.
+    Parses a structured JSON captions file.
 
-    Format example:
-    ---
-    images: post1_a.jpg, post1_b.jpg
-    First post caption here!
-    #marketing #meta
-    ---
-    images: post2.jpg
-    Second post caption...
-    ---
-    Or without images header (auto-pairs sequentially with images in images_dir).
+    Supported JSON structures:
+    1. Root array of post objects:
+       [
+         {"id": 1, "images": ["01.jpg"], "caption": "Hello world!"},
+         {"id": 2, "images": ["02a.jpg", "02b.jpg"], "caption": "Carousel!"}
+       ]
+    2. Root object with a "posts" list:
+       {
+         "niche": "webdev",
+         "posts": [
+           {"id": 1, "images": ["01.jpg"], "caption": "Hello!"}
+         ]
+       }
     """
     if not captions_path.exists():
         raise FileNotFoundError(f"Captions file not found: {captions_path}")
+
+    raw_data = json.loads(captions_path.read_text(encoding="utf-8"))
+
+    if isinstance(raw_data, dict):
+        raw_posts = raw_data.get("posts", [])
+    elif isinstance(raw_data, list):
+        raw_posts = raw_data
+    else:
+        raise ValueError("Invalid captions JSON: Root must be a list of posts or an object with a 'posts' array.")
+
+    available_images = find_images_in_dir(images_dir) if images_dir else []
+    base_dir = images_dir if images_dir else captions_path.parent
+    post_items: list[PostItem] = []
+    auto_image_idx = 0
+
+    for idx, item in enumerate(raw_posts, start=1):
+        if not isinstance(item, dict):
+            continue
+
+        caption = item.get("caption") or item.get("text") or item.get("content") or item.get("status") or ""
+        specified_images: list[Path] = []
+
+        raw_imgs = item.get("images") or item.get("image") or item.get("photos") or item.get("photo")
+        if raw_imgs:
+            if isinstance(raw_imgs, str):
+                raw_imgs = [fn.strip() for fn in raw_imgs.split(",") if fn.strip()]
+            elif isinstance(raw_imgs, list):
+                raw_imgs = [str(fn).strip() for fn in raw_imgs if str(fn).strip()]
+            else:
+                raw_imgs = []
+
+            for fn in raw_imgs:
+                specified_images.append(base_dir / fn)
+
+        if not specified_images:
+            if auto_image_idx < len(available_images):
+                specified_images = [available_images[auto_image_idx]]
+                auto_image_idx += 1
+
+        post_items.append(
+            PostItem(
+                index=idx,
+                images=specified_images,
+                caption=caption.strip(),
+            )
+        )
+
+    return post_items
+
+
+def parse_captions_file(captions_path: Path, images_dir: Path | None = None) -> list[PostItem]:
+    """
+    Parses a captions file formatted with markdown '---' dividers or JSON.
+    Auto-detects JSON if file ends with .json.
+    """
+    if not captions_path.exists():
+        raise FileNotFoundError(f"Captions file not found: {captions_path}")
+
+    if captions_path.suffix.lower() == ".json":
+        return parse_captions_json(captions_path, images_dir=images_dir)
 
     raw_text = captions_path.read_text(encoding="utf-8")
     
     # Split by lines that are strictly three or more dashes
     raw_blocks = re.split(r"(?m)^---+\s*$", raw_text)
+
 
     available_images = find_images_in_dir(images_dir) if images_dir else []
     post_items: list[PostItem] = []
