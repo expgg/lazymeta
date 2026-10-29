@@ -137,30 +137,11 @@ class MetaClient:
         progress_callback: Callable[[float], None] | None = None,
     ) -> str:
         """
-        Schedules a single photo post directly using POST /{page-id}/photos.
-        Returns the created Meta Photo ID.
+        Schedules a single photo post using the attached-media feed container flow.
+        This guarantees the scheduled post appears as an interactive visual card in the
+        Meta Business Suite Planner calendar.
         """
-        if not image_path.exists():
-            raise FileNotFoundError(f"Image not found: {image_path}")
-
-        url = f"{self.base_url}/{self.config.page_id}/photos"
-        mime, _ = mimetypes.guess_type(str(image_path))
-        mime = mime or "image/jpeg"
-
-        def _call() -> requests.Response:
-            with open(image_path, "rb") as f:
-                files = {"source": (image_path.name, f, mime)}
-                data = {
-                    "message": caption,
-                    "published": "false",
-                    "scheduled_publish_time": str(scheduled_timestamp),
-                    "access_token": self.config.access_token,
-                }
-                return self.session.post(url, files=files, data=data, timeout=60)
-
-        result = self._execute_with_backoff(_call)
-        self._apply_delay(progress_callback)
-        return str(result.get("id") or result.get("post_id"))
+        return self.schedule_multi_photo([image_path], caption, scheduled_timestamp, progress_callback)
 
     def schedule_multi_photo(
         self,
