@@ -221,11 +221,36 @@ Every single scheduled post (including single photos and multi-photo carousels) 
 
 ---
 
+## 📁 Folder Structure & Image Naming
+
+Organize your content folder as follows:
+
+```text
+lazymeta/
+├── captions.txt                  # The single file containing all 90 caption blocks
+└── images/                       # Folder containing all 90+ image files
+    ├── 01.jpg                    # Day 1, Post 1 (09:00 AM)
+    ├── 02.jpg                    # Day 1, Post 2 (02:00 PM)
+    ├── 03.jpg                    # Day 1, Post 3 (08:00 PM)
+    ├── ...
+    └── 90.jpg                    # Day 30, Post 3 (08:00 PM)
+```
+
+### 🏷️ Photo Naming Conventions
+
+| Strategy | Pattern | How It Works in `captions.txt` |
+| :--- | :--- | :--- |
+| **Two-Digit Padded (Recommended)** | `01.jpg`, `02.jpg`, ... `90.jpg` | **Zero manual typing.** Omit `images:` header. Post #1 automatically pairs to `01.jpg`, Post #2 to `02.jpg`. |
+| **Day & Slot Naming** | `day01_morning.jpg`, `day01_afternoon.jpg` | Add `images: day01_morning.jpg` at top of block. |
+| **Multi-Photo Carousels** | `02_slide1.jpg`, `02_slide2.jpg`, `02_slide3.jpg` | Add `images: 02_slide1.jpg, 02_slide2.jpg` at top of block. |
+
+---
+
 ## 📝 Captions File Formatting
 
 > [!TIP]
 > **🤖 Want an AI Agent to generate all 90 captions for you?**  
-> We included a plug-and-play AI prompt skill: [skills/lazymeta-caption-generator/SKILL.md](skills/lazymeta-caption-generator/SKILL.md). Drop this file into ChatGPT, Claude, Gemini, or Antigravity and prompt: *"Generate a 30-day queue of 90 posts for my niche"*. It will output perfectly formatted posts with hook emojis, clean line breaks, CTA, and CamelCase hashtags ready for LazyMeta.
+> We included a plug-and-play AI prompt skill: [skills/lazymeta-caption-generator/SKILL.md](skills/lazymeta-caption-generator/SKILL.md). Drop this file into ChatGPT, Claude, Gemini, or Antigravity and prompt: *"Generate a 30-day queue of 90 posts for my niche"*. It will output perfectly formatted posts with folder mappings, hook emojis, clean line breaks, CTA, and CamelCase hashtags ready for LazyMeta.
 
 LazyMeta uses standard markdown dividers (`---`) to separate posts in `captions.txt`.
 
