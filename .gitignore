@@ -49,6 +49,8 @@ venv.bak/
 .coverage
 htmlcov/
 
-# Local media directories (optional, prevent massive image commits)
+# Local media directories (prevent massive image commits)
 images/
 test_images/
+campaigns/**/images/
+
