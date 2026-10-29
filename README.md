@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/banner.png" alt="LazyMeta Banner" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+
 # ⚡ LazyMeta
 
 ### *High-Throughput 30-Day Automated Bulk Scheduler for Meta Graph API*
@@ -180,6 +182,17 @@ Execute the live scheduling loop:
 python run.py schedule --images ./images --captions ./captions.txt
 ```
 
+### 6. Live Meta Business Suite Planner Verification
+
+Once the queue completes, open your browser to **[business.facebook.com/latest/planner](https://business.facebook.com/latest/planner)**. 
+
+Every single scheduled post (including single photos and multi-photo carousels) renders as a visual, interactive card inside Meta's cloud calendar:
+
+<div align="center">
+  <img src="assets/meta_planner_demo.png" alt="Meta Business Suite Planner Calendar Demo" width="95%" style="border-radius: 10px; border: 1px solid #30363d; margin-top: 10px;" />
+  <p><i>Live scheduled posts indexed natively in Meta Business Suite Planner with image previews and carousel tags.</i></p>
+</div>
+
 ---
 
 ## 🔑 Obtaining Your Facebook Credentials
@@ -209,6 +222,10 @@ python run.py schedule --images ./images --captions ./captions.txt
 ---
 
 ## 📝 Captions File Formatting
+
+> [!TIP]
+> **🤖 Want an AI Agent to generate all 90 captions for you?**  
+> We included a plug-and-play AI prompt skill: [skills/lazymeta-caption-generator/SKILL.md](skills/lazymeta-caption-generator/SKILL.md). Drop this file into ChatGPT, Claude, Gemini, or Antigravity and prompt: *"Generate a 30-day queue of 90 posts for my niche"*. It will output perfectly formatted posts with hook emojis, clean line breaks, CTA, and CamelCase hashtags ready for LazyMeta.
 
 LazyMeta uses standard markdown dividers (`---`) to separate posts in `captions.txt`.
 
