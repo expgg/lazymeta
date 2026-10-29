@@ -129,15 +129,24 @@ python run.py doctor
 ### Step 2: Dry-Run Preview
 Inspect all parsed captions, image pairings, character counts, and calculated timestamps without uploading anything:
 ```bash
+# Preview a specific campaign folder (recommended):
+python run.py preview --campaign campaigns/<niche_name>
+
+# Or preview from root:
 python run.py preview
 ```
 
 ### Step 3: Launch Bulk Scheduler
 Upload media and publish all 90 scheduled posts directly into Meta's servers:
 ```bash
+# Launch a specific campaign (recommended):
+python run.py schedule --campaign campaigns/<niche_name>
+
+# Or launch from root:
 python run.py schedule
 ```
 *(Once complete, you can shut down your computer. Meta's servers will publish each post on schedule.)*
+
 
 ### Step 4: Check Scheduled Status
 View current progress, scheduled counts, and remaining queue:
