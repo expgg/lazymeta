@@ -249,8 +249,13 @@ lazymeta/
 ## 📝 Captions File Formatting
 
 > [!TIP]
-> **🤖 Want an AI Agent to generate all 90 captions for you?**  
-> We included a plug-and-play AI prompt skill: [skills/lazymeta-caption-generator/SKILL.md](skills/lazymeta-caption-generator/SKILL.md). Drop this file into ChatGPT, Claude, Gemini, or Antigravity and prompt: *"Generate a 30-day queue of 90 posts for my niche"*. It will output perfectly formatted posts with folder mappings, hook emojis, clean line breaks, CTA, and CamelCase hashtags ready for LazyMeta.
+> **🤖 Want an AI Agent to generate all 90 captions & high-hook images for you?**  
+> We included a plug-and-play content suite in [`content_engine/`](content_engine/):
+> - [`01_text_engine.md`](content_engine/01_text_engine.md): High-retention copywriting, 3-line pre-fold hooks, and the 5 viral farming buckets.
+> - [`02_image_engine.md`](content_engine/02_image_engine.md): 2.5D editorial vector prompts with atmospheric obsidian lighting (zero Illustrator trace overhead).
+> - [`03_pipeline_and_rules.md`](content_engine/03_pipeline_and_rules.md): Formatting rules, delimiters, and CLI execution.  
+> Drop the `content_engine/` folder into ChatGPT, Claude, Gemini, or Antigravity and prompt: *"Generate a 30-day queue of 90 posts for my niche"*. It outputs perfectly formatted posts with folder mappings, hook emojis, clean line breaks, and hashtags ready for LazyMeta.
+
 
 LazyMeta uses standard markdown dividers (`---`) to separate posts in `captions.txt`.
 
