@@ -110,8 +110,6 @@ Phase 1: 30-Day Topic Roadmap (Days 1–30, 90 post titles mapped to the 5 Bucke
    └──▶ Batch 3: Days 21–30 (Posts 61–90) ─── Final Assembly into captions.txt
 ```
 
----
-
 ## 9. EXACT POST DELIMITER TEMPLATE FOR `captions.txt`
 
 Every post in `captions.txt` **MUST** be separated by `---` on its own line:
@@ -135,3 +133,17 @@ images: 01.jpg
 #FreelanceStrategy #ClientAcquisition #BusinessMindset #AgencyGrowth
 ---
 ```
+
+---
+
+## 10. AI AGENT STEP-BY-STEP EXECUTION PROTOCOL
+
+When an AI agent is instructed to run a 30-day campaign using this engine, it must follow this exact sequence:
+
+1. **Intake:** Greet the operator in English and ask for the **Niche, Target Audience, and Campaign Goal**.
+2. **30-Day Topic Roadmap:** Present a structured list of 90 high-hook post topics (3 posts per day for Days 01–30) systematically mapped across the **5 Viral Farming Buckets**.
+3. **Batch 1 (Posts 01–30 / Days 01–10):** Upon topic roadmap approval, generate the first 30 complete posts formatted with the `---` delimiters, pre-fold 3-line hooks, staccato body, takeaway, comment prompt, hashtags, and paired image prompt targets.
+4. **Pause for Review:** Present Batch 1 to the operator for quality check and style confirmation.
+5. **Batch 2 (Posts 31–60 / Days 11–20) & Batch 3 (Posts 61–90 / Days 21–30):** Execute the remaining batches to complete the full 90-post queue.
+6. **File Assembly:** Assemble all 90 posts directly into `captions.txt` ready for LazyMeta (`python run.py preview` and `python run.py schedule`).
+

@@ -78,3 +78,19 @@ Whenever generating a prompt for a post, format it exactly like this:
   > High-end editorial vector tech illustration depicting leverage versus brute force, 1:1 aspect ratio. Central composition features a stylized faceless professional in side profile wearing a sharp dark blazer, calmly pressing a single glowing neon-cyan power switch on an elegant floating console. In the background, massive interconnected dark-slate mechanical gears and glowing translucent data pipes power up in synchrony. A crisp, sharp status badge reads 'LEVERAGE: 10X'. Deep midnight navy backdrop with subtle ambient light leaks and fine vector measurement lines. Electric cyan and vibrant coral volumetric rim lighting creating extreme edge contrast. Masterpiece vector art, modern tech editorial style, ultra-high engagement visual hook, aspect ratio 1:1.
 * **Negative Prompt:**
   > photorealism, blurry, cheesy 3D, noise, low resolution, crowded unreadable text, dull flat colors, stock photo, plain white background
+
+---
+
+## 5. AGENT EXECUTION PROTOCOL FOR IMAGE GENERATION
+
+When generating image prompts for a 30-day queue:
+
+1. **1-to-1 Mapping:** Tag every visual with its explicit file target (`images: 01.jpg` through `images: 90.jpg`).
+2. **Identify the Core Conflict:** Never depict someone passively sitting. Extract the conceptual dilemma or leverage point from the post.
+3. **Apply the 4 Visual Anchors:**
+   * Atmospheric `#0B0F17` dark obsidian slate background.
+   * Dual-tone volumetric rim lighting (cyan/amber or emerald/violet).
+   * 1 or 2 focal elements maximum (low cognitive load for fast mobile comprehension).
+   * 1 laser-etched micro-badge (`STATUS: 200`, `v2.4`, `API DEPLOYED`, etc.).
+4. **Output Format:** Provide the 2-line Visual Hook Concept, followed by the copy-paste-ready Main Prompt and Negative Prompt.
+
