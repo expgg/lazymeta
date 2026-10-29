@@ -21,7 +21,7 @@ Post Topic / captions.txt
 Google AI Flow / Imagen 3 / ImageFX (Pure White Background, Flat Colors)
         │
         ▼
-Adobe Illustrator Batch Trace (scripts/illustrator_batch_trace.jsx -> Ignore White)
+Adobe Illustrator Auto-Trace (scripts/Auto_Image_Trace_Expand.jsx -> Ignore White)
         │
         ▼
 images/01.jpg ... 90.jpg
@@ -41,7 +41,8 @@ Every prompt MUST enforce:
 * **Background:** 100% pure flat white (`#ffffff`) with generous negative space.
 * **Color Palette:** Exactly 4 to 5 flat solid colors (Zero gradients, zero shadows, zero reflections).
 * **Aspect Ratios:** `1:1` (Square 1080x1080) for feed, or `4:5` (Portrait 1080x1350) for maximum mobile feed space.
-* **Banned:** No text, no letters, no numbers, no gradient transitions, no floating confetti, no drop shadows.
+* **Minimal Tech Typography & Badges (Encouraged):** Clean geometric badges, code tags, or status pills (e.g. `API`, `v2.0`, `SQL`, `404`) that add high-end editorial tech credibility.
+* **Banned:** No paragraph text, no AI gibberish text, no plastic sluggish AI blurs, no gradient transitions, no floating confetti, no drop shadows.
 
 ---
 

@@ -37,10 +37,13 @@ Every visual prompt must enforce an uncompromising aesthetic designed to make Ad
 - **Aspect Ratio Optimization:**
   - **Default Meta Feed:** `1:1` (Square `1080x1080`) or `4:5` (Mobile Portrait `1080x1350`).
   - **Horizontal Editorial:** `4:3` (Landscape `1200x900`).
+- **Minimal Tech Typography & Badges (Allowed & Encouraged):**
+  - Crisp, minimal vector UI badges, code tags, or status pills (e.g. bold single labels like `v2.0`, `API`, `SQL`, `404`, `STATUS: OK`) are encouraged when they elevate editorial tech credibility.
+  - Must be sharp, geometrically anchored, and legible.
 - **Absolute Bans in Prompts:**
   - ZERO gradients, zero ambient shadows, zero drop shadows, zero lighting falloff, zero reflections.
   - ZERO decorative background noise, confetti, floating sparks, burst lines, or sketch strokes.
-  - ZERO text, zero code strings, zero typography, zero letters, zero numbers.
+  - ZERO chaotic AI gibberish text, zero paragraph walls, zero distorted unreadable letters, zero sluggish plastic AI blur effects.
 
 ---
 
@@ -79,10 +82,11 @@ When a post is a carousel (`02_slide1.jpg`, `02_slide2.jpg`, etc.):
 
 ---
 
-## 6. ONE-CLICK ADOBE ILLUSTRATOR BATCH SCRIPT
+## 6. ONE-CLICK ADOBE ILLUSTRATOR VECTOR AUTOMATION
 
-For maximum productivity with LazyMeta's 90-image batches, you can guide the user to run the bundled Illustrator JSX script (`scripts/illustrator_batch_trace.jsx`):
-- It automatically opens an entire folder of generated `.jpg`/`.png` files.
+For maximum productivity with LazyMeta's 90-image batches, you can guide the user to run the bundled Illustrator JSX scripts in `scripts/`:
+1. **`scripts/Auto_Image_Trace_Expand.jsx` (Recommended):** Advanced low-end PC optimized vectorization tool with live progress bar, downscale safety guards, artifact purger, and anchor point optimizer.
+2. **`scripts/illustrator_batch_trace.jsx`:** Batch folder autotracer that processes an entire `images/` directory unattended.
 - Applies the 5-color vector trace with "Ignore White".
 - Expands paths automatically.
 - Saves clean, production-ready `.ai` or transparent `.png` files directly back to `images/01.jpg`...`90.jpg`!
