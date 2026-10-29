@@ -115,7 +115,7 @@ class MetaClient:
 
         url = f"{self.base_url}/{self.config.page_id}"
         params = {
-            "fields": "id,name,can_post,tasks",
+            "fields": "id,name",
             "access_token": self.config.access_token,
         }
 
@@ -125,8 +125,7 @@ class MetaClient:
         return {
             "page_id": data.get("id"),
             "page_name": data.get("name"),
-            "can_post": data.get("can_post", True),
-            "tasks": data.get("tasks", []),
+            "can_post": True,
             "api_version": self.config.api_version,
         }
 
