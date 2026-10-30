@@ -61,23 +61,30 @@ def test_schedule_single_photo_call(test_config, tmp_path: Path):
     fake_img = tmp_path / "test.jpg"
     fake_img.write_bytes(b"image data")
 
-    mock_resp = MagicMock()
-    mock_resp.ok = True
-    mock_resp.status_code = 200
-    mock_resp.json.return_value = {"id": "photo_999", "post_id": "post_888"}
+    mock_photo = MagicMock()
+    mock_photo.ok = True
+    mock_photo.status_code = 200
+    mock_photo.json.return_value = {"id": "photo_123"}
 
-    with patch.object(client.session, "post", return_value=mock_resp) as mock_post:
-        photo_id = client.schedule_single_photo(
+    mock_feed = MagicMock()
+    mock_feed.ok = True
+    mock_feed.status_code = 200
+    mock_feed.json.return_value = {"id": "feed_post_456"}
+
+    with patch.object(client.session, "post", side_effect=[mock_photo, mock_feed]) as mock_post:
+        post_id = client.schedule_single_photo(
             image_path=fake_img,
             caption="Test single caption",
             scheduled_timestamp=1793523600,
         )
-        assert photo_id in ("photo_999", "post_888")
-        assert mock_post.called
+        assert post_id == "feed_post_456"
+        assert mock_post.call_count == 2
+        # Check second call (feed post)
         call_kwargs = mock_post.call_args[1]
-        assert call_kwargs["data"]["caption"] == "Test single caption"
+        assert call_kwargs["data"]["message"] == "Test single caption"
         assert call_kwargs["data"]["published"] == "false"
         assert call_kwargs["data"]["scheduled_publish_time"] == "1793523600"
+        assert "photo_123" in call_kwargs["data"]["attached_media"]
 
 
 def test_schedule_multi_photo_call(test_config, tmp_path: Path):
