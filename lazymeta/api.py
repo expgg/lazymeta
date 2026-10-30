@@ -137,11 +137,31 @@ class MetaClient:
         progress_callback: Callable[[float], None] | None = None,
     ) -> str:
         """
-        Schedules a single photo post using the attached-media feed container flow.
-        This guarantees the scheduled post appears as an interactive visual card in the
-        Meta Business Suite Planner calendar.
+        Schedules a single photo post directly via /{page-id}/photos.
+        This binds the photo and caption into a unified post object that publishes
+        directly onto the Page's main feed/timeline with full preview in Planner.
         """
-        return self.schedule_multi_photo([image_path], caption, scheduled_timestamp, progress_callback)
+        if not image_path.exists():
+            raise FileNotFoundError(f"Image not found: {image_path}")
+
+        mime, _ = mimetypes.guess_type(str(image_path))
+        mime = mime or "image/jpeg"
+        url = f"{self.base_url}/{self.config.page_id}/photos"
+
+        def _call() -> requests.Response:
+            with open(image_path, "rb") as f:
+                files = {"source": (image_path.name, f, mime)}
+                data = {
+                    "caption": caption,
+                    "published": "false",
+                    "scheduled_publish_time": str(scheduled_timestamp),
+                    "access_token": self.config.access_token,
+                }
+                return self.session.post(url, files=files, data=data, timeout=60)
+
+        data = self._execute_with_backoff(_call)
+        self._apply_delay(progress_callback)
+        return str(data.get("post_id") or data.get("id"))
 
     def schedule_multi_photo(
         self,
@@ -152,7 +172,7 @@ class MetaClient:
     ) -> str:
         """
         Schedules a carousel/multi-photo post using the two-step unpublished media container flow.
-        1. Uploads each photo as unpublished (`published=false`) to /{page-id}/photos.
+        1. Uploads each photo with temporary=true (`published=false`, `temporary=true`) to /{page-id}/photos.
         2. Publishes a scheduled feed story to /{page-id}/feed referencing `attached_media`.
         Returns the created Feed Post ID.
         """
@@ -161,7 +181,7 @@ class MetaClient:
 
         media_ids: list[str] = []
 
-        # Step 1: Upload each image as unpublished photo
+        # Step 1: Upload each image as temporary unpublished photo
         for img in image_paths:
             if not img.exists():
                 raise FileNotFoundError(f"Image not found: {img}")
@@ -175,7 +195,7 @@ class MetaClient:
                     files = {"source": (p.name, f, m)}
                     data = {
                         "published": "false",
-                        "temporary": "false",
+                        "temporary": "true",
                         "access_token": self.config.access_token,
                     }
                     return self.session.post(url_photos, files=files, data=data, timeout=60)
@@ -184,6 +204,7 @@ class MetaClient:
             media_id = str(photo_res.get("id"))
             media_ids.append(media_id)
             self._apply_delay(progress_callback)
+
 
         # Step 2: Publish scheduled feed story referencing attached media
         url_feed = f"{self.base_url}/{self.config.page_id}/feed"

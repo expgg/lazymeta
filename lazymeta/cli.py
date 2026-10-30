@@ -398,8 +398,8 @@ def status(limit: int) -> None:
             sched_ts = p.get("scheduled_publish_time")
             sched_str = datetime.fromtimestamp(sched_ts).strftime("%Y-%m-%d %I:%M %p") if sched_ts else "N/A"
             created_str = p.get("created_time", "N/A")[:19].replace("T", " ")
-            msg = p.get("message", "(Photo upload)")
-            clean_msg = " ".join(msg.split())[:50]
+            msg = p.get("message") or p.get("name") or p.get("caption") or "(Photo post)"
+            clean_msg = " ".join(str(msg).split())[:50]
             table.add_row(p.get("id"), sched_str, created_str, clean_msg)
 
         console.print(table)
