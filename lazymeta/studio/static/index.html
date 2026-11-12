@@ -4,6 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LazyMeta Studio · Apple Glass Edition</title>
+  <!-- Suppress Tailwind CDN production warning for local UI tools -->
+  <script>
+    (function() {
+      const origWarn = console.warn;
+      console.warn = function(...args) {
+        if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com should not be used in production')) {
+          return;
+        }
+        origWarn.apply(console, args);
+      };
+    })();
+  </script>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
@@ -196,6 +208,7 @@
           <button id="openBrandModalBtn" class="apple-glass-pill hover:bg-purple-500/20 text-white px-2.5 py-1.5 rounded-xl hidden items-center gap-1.5 text-xs transition-all border border-purple-500/30">
             <i data-lucide="sparkles" class="w-3.5 h-3.5 text-pink-400"></i>
             <span class="font-semibold text-white/90 truncate max-w-[100px]" id="brandPillName">Brand</span>
+            <span class="text-white/60 text-[10px] hidden" id="brandPillArchetype"></span>
           </button>
         </div>
 
@@ -712,7 +725,10 @@
         brandBtn.classList.remove('hidden');
         brandBtn.classList.add('flex');
         document.getElementById('brandPillName').textContent = campaignData.brand.brand_name || 'Brand DNA';
-        document.getElementById('brandPillArchetype').textContent = (campaignData.brand.brand_voice && campaignData.brand.brand_voice.archetype) ? campaignData.brand.brand_voice.archetype : 'DNA Active';
+        const brandPillArchetype = document.getElementById('brandPillArchetype');
+        if (brandPillArchetype) {
+          brandPillArchetype.textContent = (campaignData.brand.brand_voice && campaignData.brand.brand_voice.archetype) ? campaignData.brand.brand_voice.archetype : 'DNA Active';
+        }
       } else {
         brandBtn.classList.add('hidden');
         brandBtn.classList.remove('flex');

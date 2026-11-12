@@ -60,7 +60,10 @@ def list_campaign_folders() -> list[dict[str, Any]]:
         if has_captions:
             try:
                 data = json.loads(captions_file.read_text(encoding="utf-8"))
-                post_count = len(data) if isinstance(data, list) else 0
+                if isinstance(data, list):
+                    post_count = len(data)
+                elif isinstance(data, dict) and "posts" in data and isinstance(data["posts"], list):
+                    post_count = len(data["posts"])
             except Exception:
                 pass
 
@@ -133,6 +136,8 @@ def load_campaign_data(folder_path: Path) -> dict[str, Any]:
             raw = json.loads(captions_file.read_text(encoding="utf-8"))
             if isinstance(raw, list):
                 posts_data = raw
+            elif isinstance(raw, dict) and "posts" in raw and isinstance(raw["posts"], list):
+                posts_data = raw["posts"]
         except Exception as e:
             raise ValueError(f"Failed to read captions.json: {e}")
 
@@ -378,8 +383,28 @@ class StudioRequestHandler(BaseHTTPRequestHandler):
                     image_data = image_data.split(",", 1)[1]
                 raw_bytes = base64.b64decode(image_data)
 
-                # Convert, sanitize AI traces, and inject iPhone EXIF & LazyMeta/r1fat.pages.dev stamps
+                captions_file = folder_path / "captions.json"
                 target_filename = f"{int(post_id):02d}.jpg"
+
+                # Check if post has a specific existing filename in captions.json
+                raw_captions = None
+                posts_list = []
+                is_dict_format = False
+                if captions_file.exists():
+                    raw_captions = json.loads(captions_file.read_text(encoding="utf-8"))
+                    if isinstance(raw_captions, dict) and "posts" in raw_captions and isinstance(raw_captions["posts"], list):
+                        posts_list = raw_captions["posts"]
+                        is_dict_format = True
+                    elif isinstance(raw_captions, list):
+                        posts_list = raw_captions
+
+                    for p in posts_list:
+                        if p.get("id") == int(post_id):
+                            existing_imgs = p.get("images", [])
+                            if existing_imgs and isinstance(existing_imgs[0], str) and existing_imgs[0].strip():
+                                target_filename = Path(existing_imgs[0].strip()).name
+                            break
+
                 target_path = images_dir / target_filename
 
                 from lazymeta.studio.sanitizer import sanitize_and_stamp_image
@@ -390,19 +415,18 @@ class StudioRequestHandler(BaseHTTPRequestHandler):
                 )
 
                 # Update captions.json
-                captions_file = folder_path / "captions.json"
-                if captions_file.exists():
-                    posts = json.loads(captions_file.read_text(encoding="utf-8"))
+                if captions_file.exists() and raw_captions is not None:
                     found = False
-                    for p in posts:
+                    for p in posts_list:
                         if p.get("id") == int(post_id):
                             p["images"] = [target_filename]
                             found = True
                             break
-                    if not found and len(posts) >= int(post_id):
-                        posts[int(post_id) - 1]["images"] = [target_filename]
+                    if not found and len(posts_list) >= int(post_id):
+                        posts_list[int(post_id) - 1]["images"] = [target_filename]
 
-                    captions_file.write_text(json.dumps(posts, indent=2, ensure_ascii=False), encoding="utf-8")
+                    to_write = raw_captions if is_dict_format else posts_list
+                    captions_file.write_text(json.dumps(to_write, indent=2, ensure_ascii=False), encoding="utf-8")
 
                 self.send_json({
                     "success": True,
@@ -435,8 +459,16 @@ class StudioRequestHandler(BaseHTTPRequestHandler):
                     self.send_error_json("captions.json not found", status=404)
                     return
 
-                posts = json.loads(captions_file.read_text(encoding="utf-8"))
-                for p in posts:
+                raw_captions = json.loads(captions_file.read_text(encoding="utf-8"))
+                is_dict_format = False
+                posts_list = []
+                if isinstance(raw_captions, dict) and "posts" in raw_captions and isinstance(raw_captions["posts"], list):
+                    posts_list = raw_captions["posts"]
+                    is_dict_format = True
+                elif isinstance(raw_captions, list):
+                    posts_list = raw_captions
+
+                for p in posts_list:
                     if p.get("id") == int(post_id):
                         if caption is not None:
                             p["caption"] = caption
@@ -450,7 +482,8 @@ class StudioRequestHandler(BaseHTTPRequestHandler):
                             p["day"] = int(day)
                         break
 
-                captions_file.write_text(json.dumps(posts, indent=2, ensure_ascii=False), encoding="utf-8")
+                to_write = raw_captions if is_dict_format else posts_list
+                captions_file.write_text(json.dumps(to_write, indent=2, ensure_ascii=False), encoding="utf-8")
                 self.send_json({"success": True})
             except Exception as e:
                 self.send_error_json(str(e), status=500)
@@ -475,15 +508,25 @@ class StudioRequestHandler(BaseHTTPRequestHandler):
                 # Remove from captions.json
                 captions_file = folder_path / "captions.json"
                 if captions_file.exists():
-                    posts = json.loads(captions_file.read_text(encoding="utf-8"))
-                    for p in posts:
+                    raw_captions = json.loads(captions_file.read_text(encoding="utf-8"))
+                    is_dict_format = False
+                    posts_list = []
+                    if isinstance(raw_captions, dict) and "posts" in raw_captions and isinstance(raw_captions["posts"], list):
+                        posts_list = raw_captions["posts"]
+                        is_dict_format = True
+                    elif isinstance(raw_captions, list):
+                        posts_list = raw_captions
+
+                    for p in posts_list:
                         if p.get("id") == int(post_id):
                             imgs = p.get("images", [])
                             if filename in imgs:
                                 imgs.remove(filename)
                             p["images"] = imgs
                             break
-                    captions_file.write_text(json.dumps(posts, indent=2, ensure_ascii=False), encoding="utf-8")
+
+                    to_write = raw_captions if is_dict_format else posts_list
+                    captions_file.write_text(json.dumps(to_write, indent=2, ensure_ascii=False), encoding="utf-8")
 
                 self.send_json({"success": True})
             except Exception as e:
